@@ -1,0 +1,24 @@
+-- FUNCTION: public.log_document()
+
+-- DROP FUNCTION IF EXISTS public.log_document();
+
+CREATE OR REPLACE FUNCTION public.log_document()
+    RETURNS trigger
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE NOT LEAKPROOF
+AS $BODY$
+  BEGIN
+  	IF (TG_OP = 'INSERT' OR TG_OP = 'UPDATE') THEN
+      INSERT INTO public."FE_POS_LOG"
+      ("ID_TRANSACCION", "PREFIJO", "NUMERO", "XML_TEXTO", "XML_CUFE", "XML_QR", "ESTADO", "OBSERVACIONES", "FECHA_PROCESO")
+      VALUES (NEW."ID_TRANSACCION", NEW."PREFIJO", NEW."NUMERO", NEW."XML_TEXTO", NEW."XML_CUFE", NEW."XML_QR", NEW."ESTADO", NEW."OBSERVACIONES", NOW());
+    END IF;
+    
+    RETURN NULL;
+  END;
+  
+$BODY$;
+
+ALTER FUNCTION public.log_document()
+    OWNER TO postgres;

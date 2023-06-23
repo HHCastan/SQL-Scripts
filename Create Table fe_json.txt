@@ -1,0 +1,12 @@
+CREATE TABLE "public"."fe_json"
+(
+   id_transaccion SERIAL PRIMARY KEY,
+   prefijo varchar(4) NOT NULL,
+   consecutivo varchar(10) NOT NULL,
+   json_texto JSON NOT NULL,
+   fecha_pos timestamp NOT NULL,
+   transaccion varchar(4) NOT NULL,
+   terminal varchar(4) NOT NULL,
+   tienda_pos varchar(4) NOT NULL
+)
+;
